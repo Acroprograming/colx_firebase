@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Colx</title>
+  {% load static %}
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">  
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>  
+</head>
+<body>
+  <!-- navbaar -->
+  {% include 'colx_firebase/include/navbar.html' %}
+<!-- navbaar ends -->
+<div class="row">
+    <div class="col-sm-4">
+      {{ msg }}
+    </div>
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Create New Account</div>
+          <div class="panel-body">
+             <form action="{% url 'colx_firebase:signup' %}" method="post">
+              {% csrf_token %}
+             <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" class="form-control" name="fname">
+            </div>
+             <div class="form-group">
+                <label for="lname">Last Name:</label>
+                <input type="text" class="form-control" name="lname">
+            </div>
+            <div class="form-group">
+                <label for="roll_number">Roll Number:</label>
+                <input type="text" class="form-control" name="roll_number">
+            </div>
+             <div class="form-group">
+                <label for="year">Year</label>
+                <input type="text" class="form-control" name="year">
+            </div>
+             <div class="form-group">
+                <label for="Class">Class:</label>
+                <input type="text" class="form-control" name="class_field">
+            </div>
+             <div class="form-group">
+                <label for="section">Section:</label>
+                <input type="text" class="form-control" name="section">
+            </div>
+             <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+             <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" name="email">
+            </div>
+             <div class="form-group">
+                <label for="mobile_number">Mobile Number:</label>
+                <input type="text" class="form-control" name="mobile_number">
+            </div>
+            <div class="form-group">
+                <input type="submit" class="form-control" value="Submit">
+            </div>
+          </div>
+        </div>  
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+</body>
+</html>

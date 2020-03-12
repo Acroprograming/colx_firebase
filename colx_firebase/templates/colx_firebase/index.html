@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Colx</title>
+  {% load static %}
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script> 
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">  
+  <style type="text/css">
+ 
+  </style>
+  <script>
+    // hover over panel-body -->
+    $(document).ready(function(){
+    $(".panel-body").hover(function(){
+      $(this).siblings().css("background-color", "Green");
+    },function(){
+      $(this).siblings().css("background-color", "#808000");
+});
+    });
+     $(document).ready(function(){
+      $(".panel-footer").hide();
+      });
+
+      //onclick body
+      $(document).ready(function(){
+      $(".panel-body").click(function(){
+        $(this).next().toggle();
+      });
+});
+      //on add to cart
+       $(document).ready(function(){
+      $("#del-msg").click(function(){
+        $(this).parent().hide();
+      });
+});
+
+    //shadowing item on mousehover
+    //box-shadow: 10px 10px 5px grey;
+   $(document).ready(function(){
+    $(".panel").hover(function(){
+      $(this).css("box-shadow", "10px 10px 5px");
+    },function(){
+     $(this).css("box-shadow", "none");
+});
+});
+
+  </script>
+</head>
+<body style="background-color: #333300">
+  {% if request.session.localId %}
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'colx_firebase:index' %}">Colx</a>
+    </div>
+    <ul class="nav navbar-nav ">
+      <li class="active"><a href="{% url 'colx_firebase:index' %}">Home</a></li>
+      <li><a href="{% url 'colx_firebase:sell' %}">Sell</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > {{ request.session.localId }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><span class="glyphicon glyphicon-th-list"></span> Cart</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-lock"></span> Your orders</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+              <li><a href="{% url 'colx_firebase:logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav> 
+  {% else %}
+    {% include 'colx_firebase/include/navbar.html' %}
+{% endif%} 
+<!-- navbaar ends -->
+<!-- items shown -->
+<div class="container">
+  {% if useritems %}
+  <h2 style="color: white;">Items Available For Purchase</h2>
+  <div class="row" >
+        {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-success" id="message">
+                {{ message }}
+                <a href="#" id="del-msg" style="float: right">&times;</a>
+                </div>
+              {% endfor %}
+        {% endif %}
+      {% for users,items in useritems.items %}
+        {% for itemkey,item in items.items %}
+          <div class="col-sm-3">
+            <div class="panel panel-primary">
+              <div class="panel-heading " style="background-color: #808000;">Item Name : {{ item.item_name }} </div>
+              <div class="panel-body" style="background-color: #325454;">
+                  
+                <img src="{{ item.img }}" style="height: 300px;width: 225px;"/>
+                <h6 class="text-right"><kbd >&#8377 {{ item.price }}</kbd></h6>
+                <a href="{% url 'colx_firebase:buy' users itemkey %}" class=" btn btn-primary">Buy </a>
+                <a href="{% url 'colx_firebase:add_to_cart' users itemkey %}" class=" btn btn-primary" style="float: right"> Add to Cart </a>
+              </div>
+              <div class="panel-footer " style="background-color: #808000;">{{ item.description }}
+              
+               </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% else %}
+      <h2 style="color: white;">No Items Available For Purchase</h2>
+      {% endif %}
+  </div>
+</div>
+<!--js files-->
+<script>
+  var message_ele = document.getElementById("message");
+  setTimeout(function(){ 
+     message_ele.style.display = "none"; 
+    }, 10000);
+</script>
+</body>
+
+</html>

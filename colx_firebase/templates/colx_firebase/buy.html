@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Colx</title>
+  {% load static %}
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script> 
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">  
+  
+</head>
+<body style="background-color: #325454">
+  {% if request.session.roll_number %}
+  <!-- navbaar after login -->
+    <!-- navbaar after login-->
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'colx_firebase:index' %}">Colx</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'colx_firebase:index' %}">Home</a></li>
+      <li><a href="{% url 'colx_firebase:sell' %}">Sell</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > {{ request.session.roll_number }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'colx_firebase:cart' %}">Cart</a></li>
+              <li><a href="#">Your orders</a></li>
+              <li><a href="{% url 'colx_firebase:logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav> 
+  {% else %}
+    {% include 'colx_firebase/include/navbar.html' %}
+{% endif%} 
+
+ 
+ <div class="row">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <div class="panel panel-default">
+
+  <div class="panel-body bg-primary">
+    <center><h2>{{ item.item_name }}</h2></center>
+    <img src="{{ item.img }}" class="img-rounded" alt="item.item_name" style="width:100%;height: 400px;" >
+<h1>Seller Information</h1>
+  <label >Seller: </label>{{ seller.fname}} {{ seller.lname}}<br>
+  <label>Year: </label>{{ seller.year}}<br>
+  <label>Class: </label>{{ seller.class}}<br>
+  <label>Section: </label>{{ seller.section}}<br>
+   <label ><h2>Contact information </h2></label><br>
+  <label>Mobile No: </label>{{ seller.mobile_number}}<br>
+  <label>Email: </label>{{ seller.email}}<br></div>
+  </center>
+    <div class="panel-footer"><h2>Please contact the Seller to buy the item</h2></div>
+  
+</div>
+  </div>
+  <div class="col-lg-2"></div>
+
+ </body>
+ </html> 
