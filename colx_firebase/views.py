@@ -151,7 +151,7 @@ def signup(request):
 		except Exception as e:
 			return render(request, "colx_firebase/signup.html",{'msg':e})
 		
-		student={'first_name':fname,'last_name':lname,'email':email,'year':year,'class':class_field,'mobile_number':mobile_number}
+		student={'first_name':fname,'last_name':lname,'email':email,'year':year,'class':class_field,'mobile_number':mobile_number,'section':section}
 		
 		db.child("student").child(user['localId']).child("details").set(student)
 
