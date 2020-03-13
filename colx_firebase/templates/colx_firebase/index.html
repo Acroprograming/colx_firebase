@@ -60,9 +60,9 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
-            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > {{ request.session.localId }} <span class="caret"></span></a>
+            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > Menu <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#"><span class="glyphicon glyphicon-th-list"></span> Cart</a></li>
+              <li><a href="{% url 'colx_firebase:cart' %}"><span class="glyphicon glyphicon-th-list"></span> Cart</a></li>
               <li><a href="#"><span class="glyphicon glyphicon-lock"></span> Your orders</a></li>
               <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
               <li><a href="{% url 'colx_firebase:logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
@@ -91,14 +91,22 @@
       {% for users,items in useritems.items %}
         {% for itemkey,item in items.items %}
           <div class="col-sm-3">
+            
             <div class="panel panel-primary">
               <div class="panel-heading " style="background-color: #808000;">Item Name : {{ item.item_name }} </div>
               <div class="panel-body" style="background-color: #325454;">
                   
                 <img src="{{ item.img }}" style="height: 300px;width: 225px;"/>
                 <h6 class="text-right"><kbd >&#8377 {{ item.price }}</kbd></h6>
+                <form action="{% url 'colx_firebase:add_to_cart' %}" method="post">
+                  {% csrf_token %}
+                  <input type="text" name="item" value="{{ item }}" style="display: none">
+                  <input type="text" name="itemkey" value="{{ itemkey }}" style="display: none">
+                  <input type="text" name="seller" value="{{ users }}" style="display: none">
                 <a href="{% url 'colx_firebase:buy' users itemkey %}" class=" btn btn-primary">Buy </a>
-                <a href="{% url 'colx_firebase:add_to_cart' users itemkey %}" class=" btn btn-primary" style="float: right"> Add to Cart </a>
+                
+                  <button class=" btn btn-primary" style="float: right" tyep="submit"> Add to Cart </button>
+              </form>
               </div>
               <div class="panel-footer " style="background-color: #808000;">{{ item.description }}
               

@@ -28,8 +28,8 @@ url('login/',views.login, name="login"),
 url('logout/',views.logout, name="logout"),
 url('sell/',views.sell,name='sell'),
 #
-url(r'^add_to_cart/(?P<userid>.+)/(?P<itemid>.+)/$',views.add_to_cart,name='add_to_cart'),
-url(r'^buy/(?P<userid>.+)/(?P<itemid>.+)/$',views.buy,name='buy'),
+url('add_to_cart/',views.add_to_cart,name='add_to_cart'),
+url(r'buy/(?P<userid>.+)/(?P<itemid>.+)/$',views.buy,name='buy'),
 url('cart/',views.cart,name='cart'),
 url('',views.index,name='index'),
 

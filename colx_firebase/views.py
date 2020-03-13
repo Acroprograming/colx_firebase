@@ -6,7 +6,7 @@ from django.views import generic
 from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
-
+import ast
 
 
 config = {
@@ -36,7 +36,7 @@ def login(request):
 			return render(request,"colx_firebase/login.html",{"msg":message})
 		request.session['localId']=str(user['localId'])
 		request.session['idToken']=str(user['idToken'])
-		print(user)
+		#print(user)
 		return HttpResponseRedirect(reverse('colx_firebase:index'))
 	else:
 		return render(request,"colx_firebase/login.html")
@@ -54,11 +54,12 @@ def index(request):
 	items=db.child("items").get()
 	try:
 		useritems=items.val()
-		print(useritems)
+		#print(useritems)
 		for users in useritems.keys():
 		#print(l[x])
 			for item in useritems[users].values():
-				print(item['description'])
+				#print(item['description'])
+				pass
 		return render(request, "colx_firebase/index.html",{'useritems':useritems})
 	except:
 		return render(request,"colx_firebase/index.html")
@@ -91,11 +92,19 @@ def index(request):
 '''
 def cart(request):
 	localId=request.session['localId']
-	items=db.child("student").child(localId).child("cart").get().val()
-
-	return render(request,'colx_firebase/cart.html',{'item':items})
-
-def add_to_cart(request , userid , itemid):
+	items=db.child("student").child(localId).child("cart").get()
+	try:
+		useritems=items.val()
+		#print(useritems)
+		for users in useritems.keys():
+		#print(l[x])
+			for item in useritems[users].values():
+				#print(item['description'])
+				pass
+		return render(request, "colx_firebase/cart.html",{'useritems':useritems})
+	except:
+		return render(request,"colx_firebase/cart.html")
+def add_to_cart(request):
 	try:
 		localId=request.session['localId']
 		#seller_obj=db.child("student").order_by_child("email")equal_to(email).get()
@@ -103,8 +112,13 @@ def add_to_cart(request , userid , itemid):
 		err="You need to login first to Sell any item"
 		return render(request,'colx_firebase/login.html',{'msg':err})
 	else:
-		db.child("student").child(localId).child("cart").child(itemid).set({itemid:userid})
-		print("add_to_cart")
+		if(request.method=="POST"):
+			seller=request.POST['seller']
+			item=request.POST['item']
+			itemkey=request.POST['itemkey']
+			#print(itemkey)
+		db.child("student").child(localId).child("cart").child(seller).child(itemkey).set(ast.literal_eval(item))
+		#print("add_to_cart")
 		return HttpResponseRedirect(reverse('colx_firebase:index'))
 def buy(request,userid,itemid):
 	try:
@@ -117,8 +131,8 @@ def buy(request,userid,itemid):
 		seller=seller.val()
 		item=db.child("items").child(userid).child(itemid).get()
 		item=item.val()
-		print(seller)
-		print(item)
+		#print(seller)
+		#print(item)
 		return render(request,'colx_firebase/buy.html',{'seller':seller,'item':item})
 def signup(request):
 	#return render(request,"colx_firebase/signup.html")
@@ -137,7 +151,7 @@ def signup(request):
 		except Exception as e:
 			return render(request, "colx_firebase/signup.html",{'msg':e})
 		
-		student={'first_name':fname,'last_name':lname,'email':email,'year':year,'class':class_field,'mobile number':mobile_number}
+		student={'first_name':fname,'last_name':lname,'email':email,'year':year,'class':class_field,'mobile_number':mobile_number}
 		
 		db.child("student").child(user['localId']).child("details").set(student)
 

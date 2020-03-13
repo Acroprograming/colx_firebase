@@ -9,7 +9,7 @@
   
 </head>
 <body style="background-color: #333300">
-  {% if request.session.email %}
+  {% if request.session.localId %}
   <!-- navbaar after login -->
     <!-- navbaar after login-->
 <nav class="navbar navbar-inverse">
@@ -23,7 +23,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
-            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > {{ request.session.email }} <span class="caret"></span></a>
+            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" > Menu <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'colx_firebase:cart' %}"><span class="glyphicon glyphicon-th-list"></span> Cart</a></li>
               <li><a href="#"><span class="glyphicon glyphicon-lock"></span> Your orders</a></li>
